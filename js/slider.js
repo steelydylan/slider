@@ -44,11 +44,9 @@
 		var startX = 0;
 		var swipe = function(action,event){
 			if(action === 'start') {
-				console.log('start');
-				startX = event.touches[0].pageX;
+				startX = event.originalEvent.touches[0].pageX;
 			} else if (action === 'move') {
-				console.log('move');
-				var endX = event.touches[0].pageX;
+				var endX = event.originalEvent.touches[0].pageX;
 				var diffX = Math.round(startX - endX);
 				$self.data('diffX',diffX);
 				var absX = Math.abs(diffX);
@@ -148,17 +146,18 @@
 			});
 		}
 
-		document.addEventListener('touchstart', function(e){
-			swipe('start',e);
-		})
 
-		document.addEventListener('touchmove', function(e) {
+		$ul.on('touchstart',function(e){
+			swipe('start',e);
+		});
+
+		$ul.on('touchmove',function(e){
 			swipe('move',e);
 		});
 
-		document.addEventListener('touchend', function(e) {
+		$ul.on('touchend',function(e){
 			swipeEnd();
-		})
+		});
 
 		var timer = false,
 			afterTimer = false;
